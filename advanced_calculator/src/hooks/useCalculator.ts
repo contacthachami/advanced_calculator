@@ -9,6 +9,8 @@ const initialState: CalculatorState = {
   isScientific: false,
   isDarkMode: false,
   isListening: false,
+  error: null,
+  decimalPlaces: 0,
 };
 
 function calculatorReducer(state: CalculatorState, action: CalculatorAction): CalculatorState {
@@ -17,38 +19,42 @@ function calculatorReducer(state: CalculatorState, action: CalculatorAction): Ca
       return {
         ...state,
         display: state.display + action.payload,
+        error: null,
       };
     case 'SET_OPERATION':
       return {
         ...state,
         display: state.display + action.payload,
+        error: null,
       };
     case 'CALCULATE':
       try {
-        const result = evaluate(state.display).toString();
+        const result = Math.floor(evaluate(state.display));
         const newHistory = [
           {
             expression: state.display,
-            result,
+            result: result.toString(),
             timestamp: Date.now(),
           },
           ...state.history,
         ];
         return {
           ...state,
-          display: result,
+          display: result.toString(),
           history: newHistory,
+          error: null,
         };
       } catch (error) {
         return {
           ...state,
-          display: 'Error',
+          error: 'Invalid expression',
         };
       }
     case 'CLEAR':
       return {
         ...state,
         display: '',
+        error: null,
       };
     case 'STORE_MEMORY':
       return {
@@ -65,11 +71,6 @@ function calculatorReducer(state: CalculatorState, action: CalculatorAction): Ca
         ...state,
         memory: '',
       };
-    case 'TOGGLE_SCIENTIFIC':
-      return {
-        ...state,
-        isScientific: !state.isScientific,
-      };
     case 'TOGGLE_THEME':
       return {
         ...state,
@@ -79,6 +80,17 @@ function calculatorReducer(state: CalculatorState, action: CalculatorAction): Ca
       return {
         ...state,
         history: [],
+      };
+    case 'SET_ERROR':
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case 'SET_EXPRESSION':
+      return {
+        ...state,
+        display: action.payload,
+        error: null,
       };
     default:
       return state;
@@ -93,11 +105,11 @@ export function useCalculator() {
     
     if (/[0-9]/.test(key)) {
       dispatch({ type: 'APPEND_NUMBER', payload: key });
-    } else if (['+', '-', '*', '/', '.'].includes(key)) {
+    } else if (['+', '-', '*', '/', '(', ')', '^'].includes(key)) {
       dispatch({ type: 'SET_OPERATION', payload: key });
     } else if (key === 'Enter') {
       dispatch({ type: 'CALCULATE' });
-    } else if (key === 'Escape') {
+    } else if (key === 'Escape' || key === 'c' || key === 'C') {
       dispatch({ type: 'CLEAR' });
     }
   }, []);

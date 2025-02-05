@@ -11,6 +11,8 @@ export interface CalculationHistory {
     isScientific: boolean;
     isDarkMode: boolean;
     isListening: boolean;
+    error: string | null;
+    decimalPlaces: number;
   }
   
   export type CalculatorAction =
@@ -23,4 +25,7 @@ export interface CalculationHistory {
     | { type: 'CLEAR_MEMORY' }
     | { type: 'TOGGLE_SCIENTIFIC' }
     | { type: 'TOGGLE_THEME' }
-    | { type: 'CLEAR_HISTORY' };
+    | { type: 'CLEAR_HISTORY' }
+    | { type: 'SET_ERROR'; payload: string | null }
+    | { type: 'SET_DECIMAL_PLACES'; payload: number }
+    | { type: 'SET_EXPRESSION'; payload: string };
