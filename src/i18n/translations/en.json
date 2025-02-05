@@ -1,0 +1,40 @@
+{
+    "calculator": {
+      "title": "Advanced Calculator",
+      "theme": {
+        "light": "Light Mode",
+        "dark": "Dark Mode"
+      },
+      "operations": {
+        "add": "Add",
+        "subtract": "Subtract",
+        "multiply": "Multiply",
+        "divide": "Divide",
+        "sin": "Sine",
+        "cos": "Cosine",
+        "tan": "Tangent",
+        "log": "Logarithm",
+        "sqrt": "Square Root",
+        "factorial": "Factorial"
+      },
+      "memory": {
+        "store": "Store",
+        "recall": "Recall",
+        "clear": "Clear"
+      },
+      "history": {
+        "title": "History",
+        "clear": "Clear History",
+        "empty": "No calculations yet"
+      },
+      "print": {
+        "save": "Save as PDF",
+        "print": "Print"
+      },
+      "voice": {
+        "start": "Start Voice Input",
+        "stop": "Stop Voice Input",
+        "listening": "Listening..."
+      }
+    }
+  }
