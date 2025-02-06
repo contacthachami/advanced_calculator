@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ADVANCED_CALCULATOR
 
 Description:
