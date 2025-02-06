@@ -35,7 +35,7 @@ export const History: React.FC<HistoryProps> = ({
       }`}
     >
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">{t('calculator.history.title')}</h3>
+        <h3 className="text-lg font-semibold">{t('Calculation Logs')}</h3>
         <button
           onClick={onClear}
           className={`text-sm px-2 py-1 rounded ${
@@ -44,14 +44,14 @@ export const History: React.FC<HistoryProps> = ({
               : 'bg-red-500 hover:bg-red-600'
           } text-white transition-colors`}
         >
-          {t('calculator.history.clear')}
+          {t('Clear all')}
         </button>
       </div>
 
       <div className="relative mb-4">
         <input
           type="text"
-          placeholder={t('calculator.history.search')}
+          placeholder={t('search bar')}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className={`w-full p-2 pl-8 rounded ${
@@ -68,7 +68,7 @@ export const History: React.FC<HistoryProps> = ({
           <p className="text-gray-500">
             {searchTerm
               ? t('calculator.history.noResults')
-              : t('calculator.history.empty')}
+              : t('Result History')}
           </p>
         ) : (
           filteredHistory.map((item) => (

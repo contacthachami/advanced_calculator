@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+ADVANCED_CALCULATOR
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Description:
 
-Currently, two official plugins are available:
+The ADVANCED_CALCULATOR project is a web-based application built with TypeScript and React. It features advanced calculator functionalities including history, custom button components, and a sleek UI design.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+PROJECT STRUCTURE
 
-## Expanding the ESLint configuration
+The project structure is as follows:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+ADVANCED_CALCULATOR
+│
+├── node_modules
+├── public
+│   └── index.html
+├── src
+│   ├── components
+│   │   ├── Button.tsx
+│   │   ├── Display.tsx
+│   │   └── History.tsx
+│   ├── hooks
+│   ├── types
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   └── style.css
+├── .gitignore
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── README.md
+├── tailwind.config.js
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Installation and Setup
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Follow these steps to run the project on your local machine:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Prerequisites:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Node.js(version 14 or later)
+
+npm (version 6 or later) or yarn
+
+Installation:
+
+Clone the repository:
+
+git clone https://github.com/contacthachami/advanced_calculator
+cd advanced_calculator
+
+Install dependencies: Using npm:
+
+npm install
+
+Running the Application:
+
+npm run dev
+
+
+License:
+
+This project is licensed under the MIT License - see the LICENSE file for details.

@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 interface ButtonProps {
   onClick: () => void;
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'scientific' | 'memory' | 'unit';
+  variant?: 'primary' | 'secondary';
   isDarkMode?: boolean;
-  shortcut?: string;
+  className?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -14,42 +14,27 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   variant = 'primary',
   isDarkMode = false,
-  shortcut,
+  className = '',
 }) => {
-  const baseClasses = 'rounded-lg p-3 text-center transition-all duration-200 font-medium relative';
+  const baseClasses = 'rounded-xl p-4 text-center transition-all duration-300 font-medium relative backdrop-blur-sm shadow-lg';
   
   const variantClasses = {
     primary: isDarkMode
-      ? 'bg-gray-700 hover:bg-gray-600 text-white'
-      : 'bg-gray-100 hover:bg-gray-200 text-gray-800',
+      ? 'bg-gray-800/80 hover:bg-gray-700/80 text-white shadow-gray-900/30'
+      : 'bg-white/80 hover:bg-gray-50/80 text-gray-800 shadow-gray-200/30',
     secondary: isDarkMode
-      ? 'bg-gray-800 hover:bg-gray-700 text-white'
-      : 'bg-white hover:bg-gray-50 text-gray-800 border border-gray-200',
-    scientific: isDarkMode
-      ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
-      : 'bg-indigo-500 hover:bg-indigo-600 text-white',
-    memory: isDarkMode
-      ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-      : 'bg-emerald-500 hover:bg-emerald-600 text-white',
-    unit: isDarkMode
-      ? 'bg-amber-600 hover:bg-amber-700 text-white'
-      : 'bg-amber-500 hover:bg-amber-600 text-white',
+      ? 'bg-gray-700/80 hover:bg-gray-600/80 text-white shadow-gray-900/30'
+      : 'bg-gray-100/80 hover:bg-gray-200/80 text-gray-800 shadow-gray-200/30',
   };
 
   return (
     <motion.button
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={`${baseClasses} ${variantClasses[variant]}`}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
       onClick={onClick}
-      aria-label={typeof children === 'string' ? children : undefined}
     >
       {children}
-      {shortcut && (
-        <span className="absolute bottom-1 right-1 text-xs opacity-60">
-          {shortcut}
-        </span>
-      )}
     </motion.button>
   );
 };

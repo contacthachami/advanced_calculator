@@ -16,13 +16,13 @@ export const Display: React.FC<DisplayProps> = ({
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`w-full p-4 rounded-lg mb-4 ${
+      className={`p-6 ${
         isDarkMode
-          ? 'bg-gray-800 text-white'
-          : 'bg-white text-gray-800'
-      } shadow-lg`}
+          ? 'bg-gray-800/50 text-white'
+          : 'bg-gray-50/50 text-gray-800'
+      }`}
     >
-      <div className="text-right text-4xl font-mono tracking-wider overflow-x-auto">
+      <div className="text-right text-4xl font-mono tracking-wider overflow-x-auto scrollbar-hide">
         {error ? (
           <span className="text-red-500">{error}</span>
         ) : (
