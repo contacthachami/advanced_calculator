@@ -19,6 +19,7 @@ Installation:
 Clone the repository:
 
 git clone https://github.com/contacthachami/advanced_calculator
+
 cd advanced_calculator
 
 Install dependencies: Using npm:
