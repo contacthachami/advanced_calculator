@@ -29,10 +29,3 @@ Running the Application:
 
 npm run dev
 
-
-License:
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-=======
-# advanced_calculator
->>>>>>> 05158c2d266bd9540a0a42be85dd65b310e4d888
