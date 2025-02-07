@@ -1,0 +1,41 @@
+{
+    "calculator": {
+      "title": "Erweiterter Wissenschaftlicher Rechner",
+      "theme": {
+        "light": "Heller Modus",
+        "dark": "Dunkler Modus"
+      },
+      "operations": {
+        "add": "Addieren",
+        "subtract": "Subtrahieren",
+        "multiply": "Multiplizieren",
+        "divide": "Dividieren",
+        "sin": "Sinus",
+        "cos": "Kosinus",
+        "tan": "Tangens",
+        "log": "Logarithmus",
+        "ln": "Natürlicher Logarithmus",
+        "sqrt": "Quadratwurzel",
+        "pow": "Potenz",
+        "pi": "Pi",
+        "e": "Eulersche Zahl",
+        "factorial": "Fakultät"
+      },
+      "memory": {
+        "store": "Speichern",
+        "recall": "Abrufen",
+        "clear": "Löschen"
+      },
+      "history": {
+        "title": "Verlauf",
+        "clear": "Verlauf löschen",
+        "empty": "Noch keine Berechnungen",
+        "search": "Berechnungen suchen...",
+        "noResults": "Keine Ergebnisse gefunden"
+      },
+      "scientific": {
+        "toggle": "Wissenschaftlicher Modus"
+      }
+    }
+  }
+  

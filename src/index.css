@@ -1,3 +1,4 @@
+/* Ensure Tailwind CSS is installed and configured correctly */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,7 +23,7 @@
 }
 
 .calculator-gradient {
-  background-image: url('public/images/img.png');
+  background-image: url('/images/img.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -40,7 +41,7 @@
 }
 
 .light-gradient {
-  background-image: url('public/images/img.png');
+  background-image: url('/images/img.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
