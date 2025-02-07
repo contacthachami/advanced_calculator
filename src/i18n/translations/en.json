@@ -1,40 +1,41 @@
 {
     "calculator": {
-      "title": "Calculatrice Scientifique Avancée",
+      "title": "Advanced Scientific Calculator",
       "theme": {
-        "light": "Mode Clair",
-        "dark": "Mode Sombre"
+        "light": "Light Mode",
+        "dark": "Dark Mode"
       },
       "operations": {
-        "add": "Ajouter",
-        "subtract": "Soustraire",
-        "multiply": "Multiplier",
-        "divide": "Diviser",
-        "sin": "Sinus",
-        "cos": "Cosinus",
-        "tan": "Tangente",
-        "log": "Logarithme",
-        "ln": "Logarithme Naturel",
-        "sqrt": "Racine Carrée",
-        "pow": "Puissance",
+        "add": "Add",
+        "subtract": "Subtract",
+        "multiply": "Multiply",
+        "divide": "Divide",
+        "sin": "Sine",
+        "cos": "Cosine",
+        "tan": "Tangent",
+        "log": "Logarithm",
+        "ln": "Natural Logarithm",
+        "sqrt": "Square Root",
+        "pow": "Power",
         "pi": "Pi",
-        "e": "Nombre d'Euler",
-        "factorial": "Factorielle"
+        "e": "Euler's Number",
+        "factorial": "Factorial"
       },
       "memory": {
-        "store": "Stocker",
-        "recall": "Rappeler",
-        "clear": "Effacer"
+        "store": "Store",
+        "recall": "Recall",
+        "clear": "Clear"
       },
       "history": {
-        "title": "Historique",
-        "clear": "Effacer l'historique",
-        "empty": "Aucun calcul pour le moment",
-        "search": "Rechercher des calculs...",
-        "noResults": "Aucun résultat trouvé"
+        "title": "History",
+        "clear": "Clear History",
+        "empty": "No calculations yet",
+        "search": "Search calculations...",
+        "noResults": "No results found"
       },
       "scientific": {
-        "toggle": "Mode Scientifique"
+        "toggle": "Scientific Mode"
       }
     }
   }
+  
