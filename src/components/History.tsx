@@ -2,13 +2,15 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { CalculationHistory } from '../types/calculator';
-import { Search, Clock, Trash2, RotateCcw } from 'lucide-react';
+import { Search, Clock, Trash2, RotateCcw, Download, Camera } from 'lucide-react';
 
 interface HistoryProps {
   history: CalculationHistory[];
   onClear: () => void;
   isDarkMode: boolean;
   onSelect: (expression: string) => void;
+  onExportPDF: () => void;
+  onExportImage: () => void;
 }
 
 export const History: React.FC<HistoryProps> = ({
@@ -16,6 +18,8 @@ export const History: React.FC<HistoryProps> = ({
   onClear,
   isDarkMode,
   onSelect,
+  onExportPDF,
+  onExportImage,
 }) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -45,19 +49,47 @@ export const History: React.FC<HistoryProps> = ({
             <Clock className="w-5 h-5 mr-2" />
             {t('calculator.history.title')}
           </h2>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onClear}
-            className={`p-2 rounded-lg transition-colors ${
-              isDarkMode
-                ? 'hover:bg-red-500/20 text-red-400'
-                : 'hover:bg-red-100 text-red-600'
-            }`}
-            title={t('calculator.history.clear')}
-          >
-            <Trash2 className="w-5 h-5" />
-          </motion.button>
+          <div className="flex space-x-2">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onExportPDF}
+              className={`p-2 rounded-lg transition-colors ${
+                isDarkMode
+                  ? 'hover:bg-purple-500/20 text-purple-400'
+                  : 'hover:bg-purple-100 text-purple-600'
+              }`}
+              title="Export to PDF"
+            >
+              <Download className="w-5 h-5" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onExportImage}
+              className={`p-2 rounded-lg transition-colors ${
+                isDarkMode
+                  ? 'hover:bg-blue-500/20 text-blue-400'
+                  : 'hover:bg-blue-100 text-blue-600'
+              }`}
+              title="Export as Image"
+            >
+              <Camera className="w-5 h-5" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onClear}
+              className={`p-2 rounded-lg transition-colors ${
+                isDarkMode
+                  ? 'hover:bg-red-500/20 text-red-400'
+                  : 'hover:bg-red-100 text-red-600'
+              }`}
+              title={t('calculator.history.clear')}
+            >
+              <Trash2 className="w-5 h-5" />
+            </motion.button>
+          </div>
         </div>
 
         {/* Search Bar */}

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Calculator, Sun, Moon, Languages, FunctionSquare as Function } from 'lucide-react';
@@ -10,7 +10,7 @@ import './i18n/i18n';
 
 function App() {
   const { t, i18n } = useTranslation();
-  const { state, dispatch, handleKeyPress, handleScientificOperation } = useCalculator();
+  const { state, dispatch, handleKeyPress, handleScientificOperation, exportToPDF, exportToImage } = useCalculator();
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
@@ -20,7 +20,7 @@ function App() {
   const languages = [
     { code: 'en', name: 'English' },
     { code: 'fr', name: 'Français' },
-    { code: 'de', name: 'deutsche' }
+    { code: 'es', name: 'Español' }
   ];
 
   return (
@@ -270,6 +270,8 @@ function App() {
                 onClear={() => dispatch({ type: 'CLEAR_HISTORY' })}
                 isDarkMode={state.isDarkMode}
                 onSelect={(expression) => dispatch({ type: 'SET_EXPRESSION', payload: expression })}
+                onExportPDF={exportToPDF}
+                onExportImage={exportToImage}
               />
             </motion.div>
           </div>

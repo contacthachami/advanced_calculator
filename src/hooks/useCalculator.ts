@@ -1,6 +1,11 @@
 import { useReducer, useCallback } from 'react';
 import { evaluate } from 'mathjs';
 import { CalculatorState, CalculatorAction, ScientificOperation } from '../types/calculator';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import domtoimage from 'dom-to-image';
+
+const STORAGE_KEY = 'calculator_state';
 
 const initialState: CalculatorState = {
   display: '',
@@ -13,27 +18,42 @@ const initialState: CalculatorState = {
   decimalPlaces: 8,
 };
 
+// Load state from localStorage
+const loadState = (): Partial<CalculatorState> => {
+  try {
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    return savedState ? JSON.parse(savedState) : {};
+  } catch (error) {
+    console.error('Error loading state:', error);
+    return {};
+  }
+};
+
 function formatResult(result: number, decimalPlaces: number): string {
   if (Number.isInteger(result)) return result.toString();
   return result.toFixed(decimalPlaces);
 }
 
 function calculatorReducer(state: CalculatorState, action: CalculatorAction): CalculatorState {
+  let newState = state;
+
   switch (action.type) {
     case 'APPEND_NUMBER':
-      return {
+      newState = {
         ...state,
         display: state.display + action.payload,
         error: null,
       };
+      break;
     case 'SET_OPERATION':
       let operation = action.payload;
       if (operation === 'pi') operation = 'π';
-      return {
+      newState = {
         ...state,
         display: state.display + operation,
         error: null,
       };
+      break;
     case 'CALCULATE':
       try {
         let expression = state.display
@@ -53,77 +73,95 @@ function calculatorReducer(state: CalculatorState, action: CalculatorAction): Ca
           ...state.history,
         ];
         
-        return {
+        newState = {
           ...state,
           display: formattedResult,
           history: newHistory,
           error: null,
         };
       } catch (error) {
-        return {
+        newState = {
           ...state,
           error: 'Invalid expression',
         };
       }
+      break;
     case 'CLEAR':
-      return {
+      newState = {
         ...state,
         display: '',
         error: null,
       };
+      break;
     case 'STORE_MEMORY':
-      return {
+      newState = {
         ...state,
         memory: state.display,
       };
+      break;
     case 'RECALL_MEMORY':
-      return {
+      newState = {
         ...state,
         display: state.display + state.memory,
       };
+      break;
     case 'CLEAR_MEMORY':
-      return {
+      newState = {
         ...state,
         memory: '',
       };
+      break;
     case 'TOGGLE_SCIENTIFIC':
-      return {
+      newState = {
         ...state,
         isScientific: !state.isScientific,
       };
+      break;
     case 'TOGGLE_THEME':
-      return {
+      newState = {
         ...state,
         isDarkMode: !state.isDarkMode,
       };
+      break;
     case 'CLEAR_HISTORY':
-      return {
+      newState = {
         ...state,
         history: [],
       };
+      break;
     case 'SET_ERROR':
-      return {
+      newState = {
         ...state,
         error: action.payload,
       };
+      break;
     case 'SET_DECIMAL_PLACES':
-      return {
+      newState = {
         ...state,
         decimalPlaces: action.payload,
       };
+      break;
     case 'SET_EXPRESSION':
-      return {
+      newState = {
         ...state,
         display: action.payload,
         error: null,
       };
+      break;
     default:
       return state;
   }
+
+  // Save state to localStorage after each action
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+  return newState;
 }
 
 export function useCalculator() {
-  const [state, dispatch] = useReducer(calculatorReducer, initialState);
+  const [state, dispatch] = useReducer(calculatorReducer, {
+    ...initialState,
+    ...loadState(),
+  });
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     const key = event.key;
@@ -165,10 +203,132 @@ export function useCalculator() {
     dispatch({ type: 'SET_OPERATION', payload: displayOperation });
   }, []);
 
+  const exportToPDF = useCallback(async () => {
+    const element = document.getElementById('calculator');
+    if (!element) return;
+
+    try {
+      // First try dom-to-image
+      const dataUrl = await domtoimage.toPng(element, {
+        quality: 1.0,
+        bgcolor: 'transparent',
+        style: {
+          transform: 'none'
+        }
+      });
+
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      });
+
+      const imgProps = pdf.getImageProperties(dataUrl);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('calculator-history.pdf');
+    } catch (domToImageError) {
+      console.warn('dom-to-image failed, falling back to html2canvas:', domToImageError);
+      
+      try {
+        // Fallback to html2canvas
+        const canvas = await html2canvas(element, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          allowTaint: true,
+          foreignObjectRendering: true,
+          onclone: (clonedDoc) => {
+            const clonedElement = clonedDoc.getElementById('calculator');
+            if (clonedElement) {
+              clonedElement.style.width = `${element.offsetWidth}px`;
+              clonedElement.style.height = `${element.offsetHeight}px`;
+              clonedElement.style.position = 'relative';
+              clonedElement.style.transform = 'none';
+            }
+          }
+        });
+        
+        const imgData = canvas.toDataURL('image/png', 1.0);
+        
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+        });
+
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('calculator-history.pdf');
+      } catch (error) {
+        console.error('Error exporting to PDF:', error);
+      }
+    }
+  }, []);
+
+  const exportToImage = useCallback(async () => {
+    const element = document.getElementById('calculator');
+    if (!element) return;
+
+    try {
+      // First try dom-to-image
+      const dataUrl = await domtoimage.toPng(element, {
+        quality: 1.0,
+        bgcolor: 'transparent',
+        style: {
+          transform: 'none'
+        }
+      });
+
+      const link = document.createElement('a');
+      link.download = 'calculator-snapshot.png';
+      link.href = dataUrl;
+      link.click();
+    } catch (domToImageError) {
+      console.warn('dom-to-image failed, falling back to html2canvas:', domToImageError);
+
+      try {
+        // Fallback to html2canvas
+        const canvas = await html2canvas(element, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          allowTaint: true,
+          foreignObjectRendering: true,
+          onclone: (clonedDoc) => {
+            const clonedElement = clonedDoc.getElementById('calculator');
+            if (clonedElement) {
+              clonedElement.style.width = `${element.offsetWidth}px`;
+              clonedElement.style.height = `${element.offsetHeight}px`;
+              clonedElement.style.position = 'relative';
+              clonedElement.style.transform = 'none';
+            }
+          }
+        });
+
+        const link = document.createElement('a');
+        link.download = 'calculator-snapshot.png';
+        link.href = canvas.toDataURL('image/png', 1.0);
+        link.click();
+      } catch (error) {
+        console.error('Error exporting to image:', error);
+      }
+    }
+  }, []);
+
   return {
     state,
     dispatch,
     handleKeyPress,
     handleScientificOperation,
+    exportToPDF,
+    exportToImage,
   };
 }
